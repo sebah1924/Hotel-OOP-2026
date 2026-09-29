@@ -1,0 +1,41 @@
+# ==========================================
+# Archivos y carpetas de NetBeans
+# ==========================================
+nbproject/private/
+build/
+dist/
+nbbuild/
+nbdist/
+.nb-gradle/
+
+# Archivos temporales e historiales de NetBeans
+*.nbattrs
+*.bak
+*.properties.private
+
+# ==========================================
+# Compilación y ejecutable de Java
+# ==========================================
+*.class
+*.jar
+*.war
+*.ear
+*.nar
+
+# ==========================================
+# Gestión de dependencias (Maven / Gradle)
+# ==========================================
+# Descomenta si usas Maven
+# target/
+
+# Descomenta si usas Gradle
+# .gradle/
+# build/
+
+# ==========================================
+# Sistema Operativo / IDEs secundarios
+# ==========================================
+.DS_Store
+Thumbs.db
+.idea/
+.vscode/
