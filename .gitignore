@@ -39,3 +39,4 @@ nbdist/
 Thumbs.db
 .idea/
 .vscode/
+/target/

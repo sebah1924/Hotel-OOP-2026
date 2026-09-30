@@ -9,7 +9,7 @@ package com.mycompany.hotel;
  * @author sebah
  */
 public enum TipoHabitacion {
-    INDIVIDUAL, DOBLE, SUITE;
+    SENCILLA, DOBLE, SUITE;
 
     private int tarifaBase;
 
