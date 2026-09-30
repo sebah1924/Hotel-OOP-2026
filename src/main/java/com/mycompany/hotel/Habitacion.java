@@ -10,22 +10,22 @@ package com.mycompany.hotel;
  */
 public class  Habitacion {
     
-  private int tarifa;
+    TipoHabitacion tipo;
 
-    public Habitacion(int tarifa) {
-        this.tarifa = tarifa;
+    public Habitacion(TipoHabitacion tipo) {
+        this.tipo = tipo;
+    }
+    
+  public int getTarifa(){
+      return tipo.getTarifaBase();
+  }
+
+    public TipoHabitacion getTipo() {
+        return tipo;
     }
 
-    public int getTarifa() {
-        return tarifa;
-    }
-
-    public void setTarifa(int tarifa) {
-        this.tarifa = tarifa;
-    }
   
-  
-  
+   
   
     
 }

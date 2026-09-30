@@ -15,24 +15,13 @@ public class Usuario {
     String nombre;
     String cedula;
     int edad;
-  private ArrayList<Habitacion>habitaciones= new ArrayList<>();
-  
-    
-  public int getCantidadHabitaciones(){
-      return habitaciones.size();
-      
-  }
-    
-  public void registroHabitacion(Habitacion h){
-      habitaciones.add(h);
-      System.out.println("Habitacion añadida correctamente" + h.getClass().getSimpleName());
-  }
+ 
 
-    public ArrayList<Habitacion> getHabitaciones() {
-        return habitaciones;
+    public Usuario(String nombre, String cedula, int edad) {
+        this.nombre = nombre;
+        this.cedula = cedula;
+        this.edad = edad;
     }
-  
-  
-  
+ 
     
 }
