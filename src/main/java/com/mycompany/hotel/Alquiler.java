@@ -16,10 +16,12 @@ public class Alquiler {
     Usuario usuario;
     Date fecha;
      private ArrayList<Habitacion>habitaciones= new ArrayList<>();
+     
 
     public Alquiler(Usuario usuario, Date fecha) {
         this.usuario = usuario;
         this.fecha = fecha;
+       
     }
      
      

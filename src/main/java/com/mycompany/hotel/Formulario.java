@@ -141,15 +141,34 @@ public class Formulario extends javax.swing.JFrame {
             String nombre = txtNombre.getText().trim();
             String cedula = txtCedula.getText().trim();
             String edadRaw = txtEdad.getText().trim();
+            
+            
+            
+            
+            
+            
 
             if (nombre.isEmpty() || cedula.isEmpty() || edadRaw.isEmpty()) {
                 JOptionPane.showMessageDialog(this, "Debe completar todos los datos del usuario.", "Campos vacíos", JOptionPane.WARNING_MESSAGE);
                 return;
             }
+              int edad1 = Integer.parseInt(edadRaw);
+            
+              if (edad1<18) {
+                JOptionPane.showMessageDialog(this, "Edad insuficiente", "Debe ser mayor de 18", JOptionPane.WARNING_MESSAGE);
+                return;
+            }
+            
+            
+            
             int edad = Integer.parseInt(edadRaw);
-
+            
+            
             // Instanciación limpia de la entidad Usuario
             Usuario usuario = new Usuario(nombre, cedula, edad);
+            
+            
+            
 
             // 2. Instanciar la transacción de Alquiler
             Alquiler alquiler = new Alquiler(usuario, new Date());
@@ -178,11 +197,40 @@ public class Formulario extends javax.swing.JFrame {
             
             JOptionPane.showMessageDialog(this, factura, "Registro Completado", JOptionPane.INFORMATION_MESSAGE);
 
+             JOptionPane.showMessageDialog(this, factura, "Registro Completado", JOptionPane.INFORMATION_MESSAGE);
+
+            // =========================================================================
+            // CONEXIÓN FINAL CON EL CONTROLADOR
+            // =========================================================================
+            // =========================================================================
+// CONEXIÓN FINAL CON EL CONTROLADOR
+// =========================================================================
+controlador.Servicios serviciosControlador = new controlador.Servicios();
+
+try {
+    serviciosControlador.alquilar(usuario); // Le pasamos el objeto 'usuario' completo
+    JOptionPane.showMessageDialog(this, "¡Datos respaldados con éxito en la base de datos!", "Éxito", JOptionPane.INFORMATION_MESSAGE);
+} catch (Exception e) { 
+    // NOTA: Si el compilador te dice que 'Exception' es muy genérica, 
+    // cámbiala por 'SQLException' o la excepción exacta que te pida.
+    JOptionPane.showMessageDialog(this, "Error al guardar en la base de datos: " + e.getMessage(), "Error de Conexión", JOptionPane.ERROR_MESSAGE);
+    e.printStackTrace(); // Esto te ayuda a ver el error real en la consola de NetBeans/IDE
+}
+
+            
+            
+            
+            
         } catch (NumberFormatException ex) {
             JOptionPane.showMessageDialog(this, "Asegúrese de ingresar solo números enteros en Edad y Cantidades.", "Error de Formato", JOptionPane.ERROR_MESSAGE);
         }
     }
 
+    
+    
+    
+    
+    
     /**
      * @param args the command line arguments
      */

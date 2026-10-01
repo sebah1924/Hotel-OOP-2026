@@ -13,7 +13,7 @@ import java.util.ArrayList;
 public class Usuario {
     
     String nombre;
-    String cedula;
+  String  cedula;
     int edad;
  
 
@@ -23,5 +23,9 @@ public class Usuario {
         this.edad = edad;
     }
  
+    
+    
+    
+    
     
 }
