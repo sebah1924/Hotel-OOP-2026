@@ -22,6 +22,10 @@ public class Formulario extends javax.swing.JFrame {
     private JTextField txtCantDoble;
     private JTextField txtCantSuite;
     private JButton btnProcesar;
+    private JButton btnEliminar; 
+     private JButton btnActualizar;
+    
+    
 
     /**
      * Creates new form Formulario
@@ -35,16 +39,88 @@ public class Formulario extends javax.swing.JFrame {
         initComponents();
     }
 
+          /**
+     * Lógica para eliminar el registro solicitando el id_usuario mediante una ventana emergente (pop-up).
+     */
+    private void eliminarUsuarioPorFormulario() {
+        // 1. Desplegar el pop-up que solicita el ID del usuario
+        String id_usuario = JOptionPane.showInputDialog(this, 
+                "Ingrese el id_usuario del huésped que desea eliminar:", 
+                "Eliminar Huésped", 
+                JOptionPane.QUESTION_MESSAGE);
+
+        // 2. Validar si el usuario presionó "Cancelar" o cerró la ventana emergente
+        if (id_usuario == null) {
+            return; 
+        }
+
+        // Limpiar espacios en blanco innecesarios
+        id_usuario = id_usuario.trim();
+
+        // 3. Validar si el usuario dejó el campo completamente vacío y dio "Aceptar"
+        if (id_usuario.isEmpty()) {
+            JOptionPane.showMessageDialog(this, 
+                "Debe ingresar un id_usuario válido para proceder.", 
+                "Campo Vacío", 
+                JOptionPane.WARNING_MESSAGE);
+            return;
+        }
+
+        // 4. Ventana de confirmación de seguridad final
+        int confirmar = JOptionPane.showConfirmDialog(this, 
+            "¿Está seguro de que desea eliminar permanentemente al usuario con id_usuario: " + id_usuario + "?", 
+            "Confirmar Eliminación", 
+            JOptionPane.YES_NO_OPTION, 
+            JOptionPane.WARNING_MESSAGE);
+
+        if (confirmar == JOptionPane.YES_OPTION) {
+            try {
+                // 5. Instanciar la clase DAO de SQL y ejecutar la eliminación
+                UsuarioDAO usuarioDAO = new UsuarioDAO(); 
+                boolean exito = usuarioDAO.eliminar(id_usuario); 
+
+                if (exito) {
+                    JOptionPane.showMessageDialog(this, 
+                        "Usuario con id_usuario '" + id_usuario + "' eliminado correctamente.", 
+                        "Éxito", 
+                        JOptionPane.INFORMATION_MESSAGE);
+                    
+                    // Limpieza opcional de los campos principales de la ventana por si eran del mismo usuario
+                 
+                } else {
+                    JOptionPane.showMessageDialog(this, 
+                        "No se encontró ningún registro con el id_usuario: " + id_usuario, 
+                        "Error de Búsqueda", 
+                        JOptionPane.ERROR_MESSAGE);
+                }
+            } catch (Exception ex) {
+                JOptionPane.showMessageDialog(this, 
+                    "Error al conectar con la base de datos: " + ex.getMessage(), 
+                    "Error Crítico", 
+                    JOptionPane.ERROR_MESSAGE);
+            }
+        }
+    }
+
+    
+    
+    
+    
+    
+    
+    
+    
+    
     /**
      * Reescritura completa del método initComponents para generar la ventana de dos apartados.
      */
     @SuppressWarnings("unchecked")
     // <editor-fold defaultstate="collapsed" desc="Generated Code">                          
-    private void initComponents() {
+        private void initComponents() {
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
         setTitle("Registro de Usuarios y Alquiler - Hotel");
-        setSize(550, 480);
+        setSize(550, 520); // Aumentado ligeramente para dar espacio cómodo a los botones
         setLocationRelativeTo(null);
         
         // Contenedor principal con márgenes limpios
@@ -106,15 +182,34 @@ public class Formulario extends javax.swing.JFrame {
         panelPrincipal.add(panelAlquiler, gbc);
 
         // =========================================================================
-        // SECCIÓN DEL BOTÓN DE ACCIÓN
+        // SECCIÓN DE LOS BOTONES DE ACCIÓN (Organizados horizontalmente)
         // =========================================================================
-        btnProcesar = new JButton("Procesar Registro y Alquiler");
+        
+               // =========================================================================
+        // SECCIÓN DE LOS BOTONES DE ACCIÓN (Organizados horizontalmente)
+        // =========================================================================
+        JPanel panelBotones = new JPanel(new GridLayout(1, 3, 10, 0)); // Modificado a 3 columnas
+
+        btnProcesar = new JButton("Procesar Registro");
         btnProcesar.setFont(new Font("Arial", Font.BOLD, 13));
+        panelBotones.add(btnProcesar);
+
+        btnActualizar = new JButton("Actualizar Huésped"); // Botón insertado limpiamente
+        btnActualizar.setFont(new Font("Arial", Font.BOLD, 13));
+        btnActualizar.setBackground(new Color(0, 123, 255)); // Azul estándar de edición
+        btnActualizar.setForeground(Color.WHITE);
+        panelBotones.add(btnActualizar);
+
+        btnEliminar = new JButton("Eliminar Huésped");
+        btnEliminar.setFont(new Font("Arial", Font.BOLD, 13));
+        btnEliminar.setBackground(new Color(220, 53, 69)); // Color rojo de advertencia
+        btnEliminar.setForeground(Color.WHITE);           // Texto blanco para contraste gráfico
+        panelBotones.add(btnEliminar);
         
         gbc.gridx = 0;
         gbc.gridy = 2;
         gbc.insets = new Insets(15, 5, 5, 5);
-        panelPrincipal.add(btnProcesar, gbc);
+        panelPrincipal.add(panelBotones, gbc);
 
         // Asignación del contenedor construido al contenido del JFrame
         getContentPane().add(panelPrincipal);
@@ -127,9 +222,44 @@ public class Formulario extends javax.swing.JFrame {
             }
         });
         
+        // Evento del botón para activar la actualización condicional de datos
+        btnActualizar.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                actualizarUsuarioPorFormulario();
+            }
+        });
+        
+        
+      
+
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        // Evento del botón para activar la eliminación de datos
+        btnEliminar.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                eliminarUsuarioPorFormulario();
+            }
+        });
+        
         pack();
-        setSize(550, 480);
-    }// </editor-fold>                        
+        setSize(550, 520);
+    }// </editor-fold>
+
+                  
 
     /**
      * Captura la información de ambos apartados gráficos, instancia los objetos de POO 
@@ -226,6 +356,72 @@ try {
         }
     }
 
+      private void actualizarUsuarioPorFormulario() {
+        // 1. Pedir el ID del usuario que se quiere modificar actualmente
+        String id_actual = JOptionPane.showInputDialog(this, 
+                "Ingrese el id_usuario del huésped que desea ACTUALIZAR:", 
+                "Actualizar Datos", 
+                JOptionPane.QUESTION_MESSAGE);
+
+        if (id_actual == null) return; // Si cancela, salimos limpiamente
+        id_actual = id_actual.trim();
+
+        if (id_actual.isEmpty()) {
+            JOptionPane.showMessageDialog(this, "Debe ingresar un id_usuario válido.", "Campo Vacío", JOptionPane.WARNING_MESSAGE);
+            return;
+        }
+
+        try {
+            // 2. Extraer los nuevos datos escritos en las cajas de texto del formulario
+            String nuevoNombre = txtNombre.getText().trim();
+            String nuevaCedula = txtCedula.getText().trim();
+            String nuevaEdadRaw = txtEdad.getText().trim();
+
+            // Validación básica de campos vacíos
+            if (nuevoNombre.isEmpty() || nuevaCedula.isEmpty() || nuevaEdadRaw.isEmpty()) {
+                JOptionPane.showMessageDialog(this, "Escriba los nuevos datos en el formulario antes de actualizar.", "Campos incompletos", JOptionPane.WARNING_MESSAGE);
+                return;
+            }
+
+            int nuevaEdad = Integer.parseInt(nuevaEdadRaw);
+            if (nuevaEdad < 18) {
+                JOptionPane.showMessageDialog(this, "El huésped debe ser mayor de 18 años.", "Edad insuficiente", JOptionPane.WARNING_MESSAGE);
+                return;
+            }
+
+            // 3. Crear el objeto Usuario con la nueva información de las cajas
+            Usuario usuarioNuevo = new Usuario(nuevoNombre, nuevaCedula, nuevaEdad);
+
+            // 4. Ejecutar la actualización en el DAO
+            UsuarioDAO usuarioDAO = new UsuarioDAO();
+            boolean exito = usuarioDAO.actualizar(id_actual, usuarioNuevo);
+
+            if (exito) {
+                // Si la cédula cambió, calculamos visualmente cuál sería su nuevo ID asignado por el SQL
+                String mensajeExito = "Datos actualizados con éxito.";
+                if (nuevaCedula.length() >= 4) {
+                    String posibleNuevoId = nuevaCedula.substring(nuevaCedula.length() - 4);
+                    mensajeExito += "\nNota: Si modificó la cédula, el nuevo ID es: " + posibleNuevoId;
+                }
+                
+                JOptionPane.showMessageDialog(this, mensajeExito, "Éxito", JOptionPane.INFORMATION_MESSAGE);
+                 // Método auxiliar para vaciar las cajas de texto
+            } else {
+                JOptionPane.showMessageDialog(this, "No se encontró ningún registro con el id_usuario: " + id_actual, "Error", JOptionPane.ERROR_MESSAGE);
+            }
+
+        } catch (NumberFormatException e) {
+            JOptionPane.showMessageDialog(this, "La edad debe ser un número válido.", "Error de Formato", JOptionPane.ERROR_MESSAGE);
+        } catch (Exception ex) {
+            JOptionPane.showMessageDialog(this, "Error en la base de datos: " + ex.getMessage(), "Error Crítico", JOptionPane.ERROR_MESSAGE);
+        }
+    }
+    
+    
+    
+    
+    
+    
     
     
     

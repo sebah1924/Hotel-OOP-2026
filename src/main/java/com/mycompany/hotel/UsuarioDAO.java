@@ -31,5 +31,46 @@ public class UsuarioDAO {
             Conexion.cerrar();
         }
     }
+    
+      public boolean eliminar(String id_usuario) throws SQLException, ClassNotFoundException {
+        String sql = "DELETE FROM Usuario WHERE id_usuario = ?";
+        Connection con = Conexion.obtener();
+        
+        try (PreparedStatement ps = con.prepareStatement(sql)) {
+            ps.setString(1, id_usuario);
+            
+            int filasAfectadas = ps.executeUpdate();
+            return filasAfectadas > 0;
+        } finally {
+            Conexion.cerrar();
+        }
+    }
+    
+     public boolean actualizar(String id_actual, Usuario usuarioNuevo) throws SQLException, ClassNotFoundException {
+        // SQL avanzado: Actualiza el id_usuario SOLO si la cédula enviada es distinta a la registrada
+        String sql = "UPDATE Usuario SET "
+                   + "nombre = ?, "
+                   + "edad = ?, "
+                   + "id_usuario = CASE WHEN cedula_completa <> ? THEN RIGHT(?, 4) ELSE id_usuario END, "
+                   + "cedula_completa = ? "
+                   + "WHERE id_usuario = ?";
+                   
+        Connection con = Conexion.obtener();
+        
+        try (PreparedStatement ps = con.prepareStatement(sql)) {
+            ps.setString(1, usuarioNuevo.nombre);
+            ps.setInt(2, usuarioNuevo.edad);
+            ps.setString(3, usuarioNuevo.cedula); // Cédula nueva para la comparación del CASE
+            ps.setString(4, usuarioNuevo.cedula); // Cédula nueva para el cálculo de RIGHT(?, 4)
+            ps.setString(5, usuarioNuevo.cedula); // Nuevo valor final de la columna cedula_completa
+            ps.setString(6, id_actual);           // Identificador original para el WHERE
+            
+            int filasAfectadas = ps.executeUpdate();
+            return filasAfectadas > 0;
+        } finally {
+            Conexion.cerrar();
+        }
+    }
+    
 }
 
