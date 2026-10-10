@@ -10,7 +10,7 @@ package controlador;
  */
 
 
-import com.mycompany.hotel.Usuario; // Asegúrate de cambiar esto por el paquete real de tu clase Usuario
+import com.mycompany.hotel.Usuario; 
 import  com.mycompany.hotel.UsuarioDAO;
 
 public class Servicios {
